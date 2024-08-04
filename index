@@ -2,15 +2,15 @@
 
 # ITEM_PATH=$ITEM_PATH/data.txt
 
-test -z "$b" || flags="-b"
-test -z "$l" || flags="$flags -l"
-if test -z "$c"; then
+test -z "$HTTP_PARAM_b" || flags="-b"
+test -z "$HTTP_PARAM_l" || flags="$flags -l"
+if test -z "$HTTP_PARAM_c"; then
 	nc=1
 	flags="$flags -C"
 else
 	nc=
 fi
-if test -z "$s"; then
+if test -z "$HTTP_PARAM_s"; then
 	ns=1
 else
 	ns=
@@ -34,8 +34,8 @@ cat >> $DOCUMENT_ROOT/tmp/fun <<!
 		`cat $ITEM_PATH/data.txt | index`
 	</div>
 </label>
-`RB "🎸" "?s=$s&c=$nc"`
-`RB "👄" "?s=$ns&c=$c"`
+`RB "🎸" "?s=$HTTP_PARAM_s&c=$nc"`
+`RB "👄" "?s=$ns&c=$HTTP_PARAM_c"`
 `EditBtn`
 !
 
@@ -62,19 +62,19 @@ show() {
 		cat - <<!
 <div class='h f fic jcsb'>
 	<span id="$counter"><h2 class='tac'>`cat "$path" | head -n 1`</h2></span>
-	`shift_chords $counter $t`
+	`shift_chords $counter $HTTP_PARAM_t`
 </div>
 !
-		cat "$path" | tail -n +3 | transp -h $flags -t $t
+		cat "$path" | tail -n +3 | transp -h $flags -t $HTTP_PARAM_t
 		counter="`math $counter + 1`"
 	done
 }
 
-if test ! -z "$n"; then
+if test ! -z "$HTTP_PARAM_n"; then
 	count="`wc -l $ITEM_PATH/data.txt`"
 	cn=0
 	cat $ITEM_PATH/data.txt | while IFS=: read song ct; do
-		if test $cn -eq $n; then
+		if test $cn -eq $HTTP_PARAM_n; then
 			echo $song:$t
 		else
 			echo $song:$ct

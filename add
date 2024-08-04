@@ -1,0 +1,28 @@
+#!/bin/sh
+
+path=$DOCUMENT_ROOT/items/chords/items
+
+rm -rf $DOCUMENT_ROOT/tmp/chord-type-*
+
+ls $path | while read line; do
+	test -f $path/$line/type || continue
+	cat $path/$line/type | while read type; do
+		echo $line >> \
+			"$DOCUMENT_ROOT/tmp/chord-type-$type"
+	done
+done
+
+rand() {
+	cat "$DOCUMENT_ROOT/tmp/chord-type-$1" \
+		| sort -R | head -n 1
+}
+
+cat - > $ITEM_PATH/data.txt <<!
+`rand Entrada`:0
+`rand Evangelho`:0
+`rand Ofertório`:0
+`rand Santo`:0
+`rand Comunhão`:0
+`rand "Ação de Graças"`:0
+`rand Saída`:0
+!
